@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8"/>
+	<title>Dashboard I Admin Panel</title>
+	
+	<link rel="stylesheet" href="/static/css/layout.css" type="text/css" media="screen" />
+	<!--[if lt IE 9]>
+	<link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<script src="/static/js/jquery-1.5.2.min.js" type="text/javascript"></script>
+	<script src="/static/js/hideshow.js" type="text/javascript"></script>
+	<script src="/static/js/jquery.tablesorter.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/static/js/jquery.equalHeight.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() 
+    	{ 
+      	  $(".tablesorter").tablesorter(); 
+   	 } 
+	);
+	$(document).ready(function() {
+
+	//When page loads...
+	$(".tab_content").hide(); //Hide all content
+	$("ul.tabs li:first").addClass("active").show(); //Activate first tab
+	$(".tab_content:first").show(); //Show first tab content
+
+	//On Click Event
+	$("ul.tabs li").click(function() {
+
+		$("ul.tabs li").removeClass("active"); //Remove any "active" class
+		$(this).addClass("active"); //Add "active" class to selected tab
+		$(".tab_content").hide(); //Hide all tab content
+
+		var activeTab = $(this).find("a").attr("href"); //Find the href attribute value to identify the active tab + content
+		$(activeTab).fadeIn(); //Fade in the active ID content
+		return false;
+	});
+
+});
+    </script>
+    <script type="text/javascript">
+    $(function(){
+        $('.column').equalHeight();
+    });
+</script>
+
+</head>
+
+
+<body>
+
+	<header id="header">
+		<hgroup>
+			<h1 class="site_title">Hospital Waiting Time</h1>
+		</hgroup>
+	</header> <!-- end of header bar -->
+	
+	<section id="secondary_bar">
+		<div class="breadcrumbs_container">
+			<article class="breadcrumbs"><a href="index.html">Website</a> <div class="breadcrumb_divider"></div> <a class="current">Dashboard</a></article>
+		</div>
+	</section><!-- end of secondary bar -->
+	
+	<aside id="sidebar" class="column">
+		<hr/>
+		<h3>Wating Time Graphs</h3>
+		<ul class="toggle">
+			<li class="icn_photo"><a href="{% url alpha %}">vs Alpha</a></li>
+			<li class="icn_photo"><a href="{% url efficiency %}">vs Efficiency</a></li>
+			<li class="icn_photo"><a href="{% url volume %}">vs Patient Volume</a></li>
+
+		</ul>
+		<h3>Aditional Feature</h3>
+		<ul class="toggle">
+			<li class="icn_folder"><a href="#">Change Coefficients</a></li>
+			<li class="icn_photo"><a href="#">Gallery</a></li>
+		</ul>
+		
+	</aside><!-- end of sidebar -->
+	
+	<section id="main" class="column">
+		
+		
+		
+		<div class="clear"></div>
+		<article class="module width_full">
+			<header><h3>Enter Hospital Details</h3></header>
+  <form id="form1" name="form1" enctype="multipart/form-data" method="post" action="/hospital/">
+	  <div class="module_content">
+{%csrf_token%}
+{%for i in jform%}
+		{%ifequal i.name 'Operation_Room'%}
+						<fieldset>
+							<label>Number of Operation Rooms</label>
+							{{i}}
+							<!--input type="text"-->
+						</fieldset>
+		{%endifequal%}
+		{%ifequal i.name 'Number_Of_Bed'%}
+						<fieldset>
+							<label>Number of Beds</label>
+							{{i}}
+						</fieldset>
+		{%endifequal%}
+		{%ifequal i.name 'Efficiency_Index'%}
+						<fieldset>
+							<label>Efficiency Index</label>
+							{{i}}
+						</fieldset>
+		{%endifequal%}
+		{%ifequal i.name 'Data'%}
+						
+
+					<h3>Advanced Options</h3>
+					<ul class="toggle">
+						<li>
+						<fieldset>
+							<label>Upload text file</label>
+							{{i}}
+						</fieldset>
+						</li>
+		{%endifequal%}
+		{%ifequal i.name 'Casuality'%}
+					<ul class="toggle">
+						<li>
+						<fieldset>
+							<label>Number of Casualities</label>
+							{{i}}
+						</fieldset></li>
+		{%endifequal%}
+					</ul>
+{%endfor%}
+				</div>
+			<footer>
+				<div class="submit_link">
+					<input type="submit" value="Submit" class="alt_btn">
+				</div>
+			</footer>
+		</article><!-- end of post new article -->
+</form>
+		
+		<div class="spacer"></div>
+	</section>
+
+
+</body>
+
+</html>
